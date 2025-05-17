@@ -61,7 +61,6 @@ def run(
         output_folder=DEFAULT_OUTPUT_FOLDER,
         colab=DEFAULT_COLAB
         ):
-    time.sleep(10)
     #### Initialize the simulation #############################
     INIT_XYZS = np.array([[-1, 0, 1.5]])
     INIT_RPYS = np.array([[0, 0, 1.5]])

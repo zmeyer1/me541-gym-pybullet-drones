@@ -964,13 +964,13 @@ class BaseAviary(gym.Env):
         These obstacles are loaded from standard URDF files included in Bullet.
 
         """
-        
-        p.setAdditionalSearchPath('C:/Users/mecha/Desktop/PyBullet/bullet3-3.25/bullet3-3.25/data')
-        p.loadURDF("cf2xCable.urdf",
-                   [0, 0, 1.5],
-                   p.getQuaternionFromEuler([0,0,0]),
-                   physicsClientId=self.CLIENT
-                  )
+        pass
+        # p.setAdditionalSearchPath('C:/Users/mecha/Desktop/PyBullet/bullet3-3.25/bullet3-3.25/data')
+        # p.loadURDF("cf2xCable.urdf",
+        #            [0, 0, 1.5],
+        #            p.getQuaternionFromEuler([0,0,0]),
+        #            physicsClientId=self.CLIENT
+        #           )
         
     
     ################################################################################
