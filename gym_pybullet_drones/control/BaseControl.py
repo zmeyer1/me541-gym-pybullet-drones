@@ -204,6 +204,8 @@ class BaseControl(object):
         #### Find and return the desired parameter #################
         if parameter_name == 'm':
             return float(URDF_TREE[1][0][1].attrib['value'])
+        elif parameter_name == 'payloadMass': ### Modified
+            return float(URDF_TREE[18][0][1].attrib['value'])
         elif parameter_name in ['ixx', 'iyy', 'izz']:
             return float(URDF_TREE[1][0][2].attrib[parameter_name])
         elif parameter_name in ['arm', 'thrust2weight', 'kf', 'km', 'max_speed_kmh', 'gnd_eff_coeff' 'prop_radius', \
@@ -214,3 +216,5 @@ class BaseControl(object):
         elif parameter_name == 'collision_z_offset':
             COLLISION_SHAPE_OFFSETS = [float(s) for s in URDF_TREE[1][2][0].attrib['xyz'].split(' ')]
             return COLLISION_SHAPE_OFFSETS[2]
+        elif parameter_name == 'cableLength': ### Modified
+            return float(URDF_TREE[14][2][1][0].attrib['length'])
