@@ -23,7 +23,7 @@ class BaseAviary(gym.Env):
     ################################################################################
 
     def __init__(self,
-                 drone_model: DroneModel=DroneModel.CF2X,
+                 drone_model: DroneModel=DroneModel.CF2XCable,
                  num_drones: int=1,
                  neighbourhood_radius: float=np.inf,
                  initial_xyzs=None,
@@ -958,24 +958,14 @@ class BaseAviary(gym.Env):
         These obstacles are loaded from standard URDF files included in Bullet.
 
         """
-        p.loadURDF("samurai.urdf",
-                   physicsClientId=self.CLIENT
-                   )
-        p.loadURDF("duck_vhacd.urdf",
-                   [-.5, -.5, .05],
-                   p.getQuaternionFromEuler([0, 0, 0]),
-                   physicsClientId=self.CLIENT
-                   )
-        p.loadURDF("cube_no_rotation.urdf",
-                   [-.5, -2.5, .5],
-                   p.getQuaternionFromEuler([0, 0, 0]),
-                   physicsClientId=self.CLIENT
-                   )
-        p.loadURDF("sphere2.urdf",
-                   [0, 2, .5],
+        '''
+        p.setAdditionalSearchPath('C:/Users/mecha/Desktop/PyBullet/bullet3-3.25/bullet3-3.25/data')
+        p.loadURDF("cf2xCable.urdf",
+                   [0, 0, 1.5],
                    p.getQuaternionFromEuler([0,0,0]),
                    physicsClientId=self.CLIENT
-                   )
+                  )
+        '''
     
     ################################################################################
     

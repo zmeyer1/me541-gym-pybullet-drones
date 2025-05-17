@@ -32,7 +32,7 @@ from gym_pybullet_drones.utils.utils import sync, str2bool
 
 from gym_pybullet_drones.envs.VelocityAviary import VelocityAviary
 
-DEFAULT_DRONE = DroneModel("cf2x")
+DEFAULT_DRONE = DroneModel("cfdx")
 DEFAULT_GUI = True
 DEFAULT_RECORD_VIDEO = False
 DEFAULT_PLOT = True
