@@ -489,6 +489,12 @@ class BaseAviary(gym.Env):
                                               flags = p.URDF_USE_INERTIA_FROM_FILE,
                                               physicsClientId=self.CLIENT
                                               ) for i in range(self.NUM_DRONES)])
+        maxForce = 0
+        mode = p.VELOCITY_CONTROL
+        p.setJointMotorControl2(self.DRONE_IDS[0], 5, controlMode=mode, force=maxForce)
+        p.setJointMotorControl2(self.DRONE_IDS[0], 6, controlMode=mode, force=maxForce)
+        p.setJointMotorControl2(self.DRONE_IDS[0], 7, controlMode=mode, force=maxForce)
+        p.setJointMotorControl2(self.DRONE_IDS[0], 8, controlMode=mode, force=maxForce)
         #### Remove default damping #################################
         # for i in range(self.NUM_DRONES):
         #     p.changeDynamics(self.DRONE_IDS[i], -1, linearDamping=0, angularDamping=0)
@@ -958,14 +964,14 @@ class BaseAviary(gym.Env):
         These obstacles are loaded from standard URDF files included in Bullet.
 
         """
-        '''
+        
         p.setAdditionalSearchPath('C:/Users/mecha/Desktop/PyBullet/bullet3-3.25/bullet3-3.25/data')
         p.loadURDF("cf2xCable.urdf",
                    [0, 0, 1.5],
                    p.getQuaternionFromEuler([0,0,0]),
                    physicsClientId=self.CLIENT
                   )
-        '''
+        
     
     ################################################################################
     
