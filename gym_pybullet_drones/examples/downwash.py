@@ -21,7 +21,7 @@ from gym_pybullet_drones.envs.CtrlAviary import CtrlAviary
 from gym_pybullet_drones.control.DSLPIDControl import DSLPIDControl
 from gym_pybullet_drones.utils.Logger import Logger
 
-DEFAULT_DRONE = DroneModel('cf2x')
+DEFAULT_DRONE = DroneModel('cf2xCable')
 DEFAULT_GUI = True
 DEFAULT_RECORD_VIDEO = False
 DEFAULT_SIMULATION_FREQ_HZ = 240
