@@ -23,7 +23,7 @@ class BaseAviary(gym.Env):
     ################################################################################
 
     def __init__(self,
-                 drone_model: DroneModel=DroneModel.CF2XCable,
+                 drone_model: DroneModel=DroneModel.CABLE,
                  num_drones: int=1,
                  neighbourhood_radius: float=np.inf,
                  initial_xyzs=None,
@@ -118,7 +118,7 @@ class BaseAviary(gym.Env):
         self.HOVER_RPM = np.sqrt(self.GRAVITY / (4*self.KF))
         self.MAX_RPM = np.sqrt((self.THRUST2WEIGHT_RATIO*self.GRAVITY) / (4*self.KF))
         self.MAX_THRUST = (4*self.KF*self.MAX_RPM**2)
-        if self.DRONE_MODEL == DroneModel.CF2X:
+        if self.DRONE_MODEL == DroneModel.CF2X or self.DRONE_MODEL == DroneModel.CABLE: # modified to include CABLE
             self.MAX_XY_TORQUE = (2*self.L*self.KF*self.MAX_RPM**2)/np.sqrt(2)
         elif self.DRONE_MODEL == DroneModel.CF2P:
             self.MAX_XY_TORQUE = (self.L*self.KF*self.MAX_RPM**2)
@@ -489,12 +489,15 @@ class BaseAviary(gym.Env):
                                               flags = p.URDF_USE_INERTIA_FROM_FILE,
                                               physicsClientId=self.CLIENT
                                               ) for i in range(self.NUM_DRONES)])
+        
+        # ----------------stuff--------------------------------------------------------------------------------------------------------------------
         maxForce = 0
         mode = p.VELOCITY_CONTROL
         p.setJointMotorControl2(self.DRONE_IDS[0], 5, controlMode=mode, force=maxForce)
         p.setJointMotorControl2(self.DRONE_IDS[0], 6, controlMode=mode, force=maxForce)
         p.setJointMotorControl2(self.DRONE_IDS[0], 7, controlMode=mode, force=maxForce)
         p.setJointMotorControl2(self.DRONE_IDS[0], 8, controlMode=mode, force=maxForce)
+        
         #### Remove default damping #################################
         # for i in range(self.NUM_DRONES):
         #     p.changeDynamics(self.DRONE_IDS[i], -1, linearDamping=0, angularDamping=0)
@@ -849,7 +852,7 @@ class BaseAviary(gym.Env):
         if self.DRONE_MODEL == DroneModel.RACE:
             z_torques = -z_torques
         z_torque = (-z_torques[0] + z_torques[1] - z_torques[2] + z_torques[3])
-        if self.DRONE_MODEL==DroneModel.CF2X or self.DRONE_MODEL==DroneModel.RACE:
+        if self.DRONE_MODEL==DroneModel.CF2X or self.DRONE_MODEL==DroneModel.RACE or self.DRONE_MODEL == DroneModel.CABLE: # modified to include CABLE
             x_torque = (forces[0] + forces[1] - forces[2] - forces[3]) * (self.L/np.sqrt(2))
             y_torque = (- forces[0] + forces[1] + forces[2] - forces[3]) * (self.L/np.sqrt(2))
         elif self.DRONE_MODEL==DroneModel.CF2P:

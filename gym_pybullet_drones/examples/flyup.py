@@ -33,16 +33,18 @@ from gym_pybullet_drones.utils.Logger import Logger
 from gym_pybullet_drones.utils.utils import sync, str2bool
 
 DEFAULT_DRONES = DroneModel("cf2xCable") # Drone Model
+# print(DEFAULT_DRONES)
+# exit()
 DEFAULT_NUM_DRONES = 1 # Number of Drones
 DEFAULT_PHYSICS = Physics("pyb") # Physics Engine
 DEFAULT_GUI = True
 DEFAULT_RECORD_VISION = False
 DEFAULT_PLOT = True
 DEFAULT_USER_DEBUG_GUI = False
-DEFAULT_OBSTACLES = True
+DEFAULT_OBSTACLES = False
 DEFAULT_SIMULATION_FREQ_HZ = 240
 DEFAULT_CONTROL_FREQ_HZ = 48
-DEFAULT_DURATION_SEC = 60
+DEFAULT_DURATION_SEC = 120
 DEFAULT_OUTPUT_FOLDER = 'results'
 DEFAULT_COLAB = False
 
@@ -119,12 +121,17 @@ def run(
                     colab=colab
                     )
 
-    #### Initialize the controllers ############################
-    if drone in [DroneModel.CF2X, DroneModel.CF2P]:
-        ctrl = [DSLPIDControl(drone_model=drone) for i in range(num_drones)]
-###
-    else:
-        ctrl = [DSLPIDControl(drone_model=DroneModel.CF2X) for i in range(num_drones)]
+    #### Initialize the controllers ############################ # ---- modified to check control behaviour
+    
+#     if drone in [DroneModel.CF2X, DroneModel.CF2P, DroneModel.CABLE]:
+#         # print(f"HERE Now: {drone}")
+#         # exit()
+#         ctrl = [DSLPIDControl(drone_model=drone) for i in range(num_drones)]
+#         # print(ctrl.DRONE_MODEL)
+#         # exit()
+# ###
+#     # else:
+#     #     ctrl = [DSLPIDControl(drone_model=DroneModel.CF2X) for i in range(num_drones)]
 ###
 
     #### Run the simulation ####################################
@@ -139,13 +146,13 @@ def run(
         obs, reward, terminated, truncated, info = env.step(action)
 
         #### Compute control for the current way point #############
-        for j in range(num_drones):
-            action[j, :], _, _ = ctrl[j].computeControlFromState(control_timestep=env.CTRL_TIMESTEP,
-                                                                    state=obs[j],
-                                                                    target_pos=np.hstack([TARGET_POS[wp_counters[j], 0:2], INIT_XYZS[j, 2]]),
-                                                                    # target_pos=INIT_XYZS[j, :] + TARGET_POS[wp_counters[j], :],
-                                                                    target_rpy=INIT_RPYS[j, :]
-                                                                    )
+        # for j in range(num_drones):
+        #     action[j, :], _, _ = ctrl[j].computeControlFromState(control_timestep=env.CTRL_TIMESTEP,
+        #                                                             state=obs[j],
+        #                                                             target_pos=np.hstack([TARGET_POS[wp_counters[j], 0:2], INIT_XYZS[j, 2]]),
+        #                                                             # target_pos=INIT_XYZS[j, :] + TARGET_POS[wp_counters[j], :],
+        #                                                             target_rpy=INIT_RPYS[j, :]
+        #                                                             )
 
         #### Go to the next way point and loop #####################
         for j in range(num_drones):
