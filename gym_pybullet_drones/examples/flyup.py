@@ -123,15 +123,12 @@ def run(
 
     #### Initialize the controllers ############################ # ---- modified to check control behaviour
     
-#     if drone in [DroneModel.CF2X, DroneModel.CF2P, DroneModel.CABLE]:
-#         # print(f"HERE Now: {drone}")
-#         # exit()
-#         ctrl = [DSLPIDControl(drone_model=drone) for i in range(num_drones)]
-#         # print(ctrl.DRONE_MODEL)
-#         # exit()
-# ###
-#     # else:
-#     #     ctrl = [DSLPIDControl(drone_model=DroneModel.CF2X) for i in range(num_drones)]
+    if drone in [DroneModel.CF2X, DroneModel.CF2P, DroneModel.CABLE]:
+        # print(f"HERE Now: {drone}")
+        # exit()
+        ctrl = [DSLPIDControl(drone_model=drone) for i in range(num_drones)]
+        # print(ctrl.DRONE_MODEL)
+        # exit()
 ###
 
     #### Run the simulation ####################################
@@ -146,13 +143,13 @@ def run(
         obs, reward, terminated, truncated, info = env.step(action)
 
         #### Compute control for the current way point #############
-        # for j in range(num_drones):
-        #     action[j, :], _, _ = ctrl[j].computeControlFromState(control_timestep=env.CTRL_TIMESTEP,
-        #                                                             state=obs[j],
-        #                                                             target_pos=np.hstack([TARGET_POS[wp_counters[j], 0:2], INIT_XYZS[j, 2]]),
-        #                                                             # target_pos=INIT_XYZS[j, :] + TARGET_POS[wp_counters[j], :],
-        #                                                             target_rpy=INIT_RPYS[j, :]
-        #                                                             )
+        for j in range(num_drones):
+            action[j, :], _, _ = ctrl[j].computeControlFromState(control_timestep=env.CTRL_TIMESTEP,
+                                                                    state=obs[j],
+                                                                    target_pos=np.hstack([TARGET_POS[wp_counters[j], 0:2], INIT_XYZS[j, 2]]),
+                                                                    # target_pos=INIT_XYZS[j, :] + TARGET_POS[wp_counters[j], :],
+                                                                    target_rpy=INIT_RPYS[j, :]
+                                                                    )
 
         #### Go to the next way point and loop #####################
         for j in range(num_drones):

@@ -31,7 +31,7 @@ class DSLPIDControl(BaseControl):
 
         """
         super().__init__(drone_model=drone_model, g=g)
-        if self.DRONE_MODEL not in [DroneModel.CF2X]: # modified to just CABLE
+        if self.DRONE_MODEL not in [DroneModel.CABLE]: # modified to just CABLE
             # print("[ERROR] in DSLPIDControl.__init__(), DSLPIDControl requires DroneModel.CF2X or DroneModel.CF2P")
             print("[ERROR] in DSLPIDControl.__init__(), DSLPIDControl requires DroneModel.CABLE")
             exit()
@@ -47,7 +47,7 @@ class DSLPIDControl(BaseControl):
         self.PWM2RPM_CONST = 4070.3
         self.MIN_PWM = 20000
         self.MAX_PWM = 65535
-        if self.DRONE_MODEL == DroneModel.CABLE or self.DRONE_MODEL == DroneModel.CF2X: #modified to include CABLE
+        if self.DRONE_MODEL in [DroneModel.CABLE, DroneModel.CF2X]: #modified to include CABLE
             self.MIXER_MATRIX = np.array([ 
                                     [-.5, -.5, -1],
                                     [-.5,  .5,  1],
