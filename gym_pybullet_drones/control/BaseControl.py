@@ -203,7 +203,15 @@ class BaseControl(object):
         URDF_TREE = etxml.parse(path).getroot()
         #### Find and return the desired parameter #################
         if parameter_name == 'm':
-            return float(URDF_TREE[1][0][1].attrib['value'])
+            mass = 0.0
+            for label in URDF_TREE:
+                if label.tag == "link":
+                    for inertial in label[0]:
+                        if inertial.tag == "mass":
+                            print(f"adding from {label} {inertial}")
+
+                            mass += float(inertial.attrib['value'])
+            return mass
         elif parameter_name == 'payloadMass': ### Modified
             return float(URDF_TREE[18][0][1].attrib['value'])
         elif parameter_name in ['ixx', 'iyy', 'izz']:

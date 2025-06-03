@@ -64,7 +64,7 @@ def run(
         colab=DEFAULT_COLAB
         ):
     #### Initialize the simulation #############################
-    INIT_XYZS = np.array([[-1, 0, 1.5]])
+    INIT_XYZS = np.array([[-1, -1, 1.5]])
     INIT_RPYS = np.array([[0, 0, 1.5]])
 
     #### Initialize a circular trajectory ######################
@@ -72,8 +72,8 @@ def run(
     NUM_WP = control_freq_hz*PERIOD # 480
     TARGET_POS = np.zeros((NUM_WP,3))
     for i in range(NUM_WP):
-        TARGET_POS[i, :] = -1+i*0.5/NUM_WP, 0, 1
-    wp_counters = np.array([int((i*NUM_WP/6)%NUM_WP)])
+        TARGET_POS[i, :] = -1, -1, 1.5
+    wp_counters = np.array([int(((NUM_WP-1)*NUM_WP/6)%NUM_WP)])
 
     #### Debug trajectory ######################################
     #### Uncomment alt. target_pos in .computeControlFromState()
@@ -111,6 +111,12 @@ def run(
                         user_debug_gui=user_debug_gui
                         )
 
+    
+    for dr in env.DRONE_IDS:
+        print(f"[RUN FLYUP] DRONE: {dr}, POS: {p.getBasePositionAndOrientation(dr)}")
+        p.resetJointState(dr, 5, np.pi/12)
+
+
     #### Obtain the PyBullet Client ID from the environment ####
     PYB_CLIENT = env.getPyBulletClient()
 
@@ -126,7 +132,7 @@ def run(
     if drone in [DroneModel.CF2X, DroneModel.CF2P, DroneModel.CABLE]:
         # print(f"HERE Now: {drone}")
         # exit()
-        ctrl = [DSLPIDControl(drone_model=drone) for i in range(num_drones)]
+        ctrl = [DSLPIDControl(drone_model=drone) for _ in range(num_drones)]
         # print(ctrl.DRONE_MODEL)
         # exit()
 ###

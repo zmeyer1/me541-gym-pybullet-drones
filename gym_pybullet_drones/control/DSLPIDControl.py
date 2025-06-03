@@ -40,13 +40,13 @@ class DSLPIDControl(BaseControl):
         self.P_COEFF_FOR = np.array([.4, .4, 1.25])
         self.I_COEFF_FOR = np.array([.05, .05, .05])
         self.D_COEFF_FOR = np.array([.2, .2, .5])
-        self.P_COEFF_TOR = np.array([70000., 70000., 60000.])
-        self.I_COEFF_TOR = np.array([.0, .0, 500.])
-        self.D_COEFF_TOR = np.array([20000., 20000., 12000.])
+        self.P_COEFF_TOR = np.array([70., 70., 60000.])
+        self.I_COEFF_TOR = np.array([50., 50., 500.])
+        self.D_COEFF_TOR = np.array([50., 50., 12000.])
         self.PWM2RPM_SCALE = 0.2685
         self.PWM2RPM_CONST = 4070.3
         self.MIN_PWM = 20000
-        self.MAX_PWM = 65535
+        self.MAX_PWM = 655350
         if self.DRONE_MODEL in [DroneModel.CABLE, DroneModel.CF2X]: #modified to include CABLE
             self.MIXER_MATRIX = np.array([ 
                                     [-.5, -.5, -1],
@@ -190,6 +190,9 @@ class DSLPIDControl(BaseControl):
         cur_rotation = np.array(p.getMatrixFromQuaternion(cur_quat)).reshape(3, 3)
         pos_e = target_pos - cur_pos
         vel_e = target_vel - cur_vel
+
+        print(f"[CONTROLLER] Position: {cur_pos}, Goal: {target_pos}, Goal Velocity: {target_vel}, Current Velocity: {cur_vel}")
+        print(f"[CONTROLLER] Position Error: {pos_e}, Velocity Error: {vel_e}")
         self.integral_pos_e = self.integral_pos_e + pos_e*control_timestep
         self.integral_pos_e = np.clip(self.integral_pos_e, -2., 2.)
         self.integral_pos_e[2] = np.clip(self.integral_pos_e[2], -0.15, .15)
@@ -208,6 +211,7 @@ class DSLPIDControl(BaseControl):
         target_euler = (Rotation.from_matrix(target_rotation)).as_euler('XYZ', degrees=False)
         if np.any(np.abs(target_euler) > math.pi):
             print("\n[ERROR] ctrl it", self.control_counter, "in Control._dslPIDPositionControl(), values outside range [-pi,pi]")
+        print(f"[CONTROLLER] Thrust: {thrust}, Target Roll/Pitch/YAW: {target_euler}")
         return thrust, target_euler, pos_e
     
     ################################################################################

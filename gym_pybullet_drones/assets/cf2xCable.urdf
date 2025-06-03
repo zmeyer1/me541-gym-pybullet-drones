@@ -8,7 +8,7 @@
 
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0"/>
-      <mass value="0.027"/>
+      <mass value="0.27"/>
       <inertia ixx="1.4e-5" ixy="0.0" ixz="0.0" iyy="1.4e-5" iyz="0.0" izz="2.17e-5"/>
     </inertial>
 
@@ -96,11 +96,6 @@
     <parent link="base_link"/>
     <child link="center_of_mass_link"/>
   </joint>
-
-
-
-
-
 
   
 <link name="tinysphere1">
@@ -196,7 +191,7 @@
   <link name="payload_link">
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0"/>
-       <mass value="0"/>  
+       <mass value="0.15"/>  
        <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1"/>
     </inertial>
     <visual>
