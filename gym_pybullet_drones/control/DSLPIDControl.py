@@ -91,7 +91,7 @@ class DSLPIDControl(BaseControl):
                        target_pos,
                        target_rpy=np.zeros(3),
                        target_vel=np.zeros(3),
-                       target_rpy_rates=np.zeros(3)
+                       target_rpy_rates=np.zeros(3),
                        ):
         """Computes the PID control action (as RPMs) for a single drone.
 

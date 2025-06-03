@@ -114,7 +114,7 @@ def run(
     
     for dr in env.DRONE_IDS:
         print(f"[RUN FLYUP] DRONE: {dr}, POS: {p.getBasePositionAndOrientation(dr)}")
-        p.resetJointState(dr, 5, np.pi/12)
+        p.resetJointState(dr, 5, np.pi/6)
 
 
     #### Obtain the PyBullet Client ID from the environment ####
@@ -148,14 +148,19 @@ def run(
         #### Step the simulation ###################################
         obs, reward, terminated, truncated, info = env.step(action)
 
-        print(f"[ENV] Updated angles are: {p.getEulerFromQuaternion(env.load_angle[0])}")
+        angles = p.getEulerFromQuaternion(env.load_angle[0])
+        print(f"[ENV] Updated angles are: {angles}")
 
         #### Compute control for the current way point #############
         for j in range(num_drones):
+
+            angles = p.getEulerFromQuaternion(env.load_angle[j])
+            load_delta = [np.sin(angles[1]), np.sin(angles[0]), 0]
+            target_pos = env.pos[j] + load_delta
+            print(f"[CONTROLLER] Target Position: {target_pos}, Delta Pos: {load_delta}")
             action[j, :], _, _ = ctrl[j].computeControlFromState(control_timestep=env.CTRL_TIMESTEP,
                                                                     state=obs[j],
-                                                                    target_pos=np.hstack([TARGET_POS[wp_counters[j], 0:2], INIT_XYZS[j, 2]]),
-                                                                    # target_pos=INIT_XYZS[j, :] + TARGET_POS[wp_counters[j], :],
+                                                                    target_pos=target_pos,
                                                                     target_rpy=INIT_RPYS[j, :]
                                                                     )
 
