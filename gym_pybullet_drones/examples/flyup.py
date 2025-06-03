@@ -148,6 +148,8 @@ def run(
         #### Step the simulation ###################################
         obs, reward, terminated, truncated, info = env.step(action)
 
+        print(f"[ENV] Updated angles are: {p.getEulerFromQuaternion(env.load_angle[0])}")
+
         #### Compute control for the current way point #############
         for j in range(num_drones):
             action[j, :], _, _ = ctrl[j].computeControlFromState(control_timestep=env.CTRL_TIMESTEP,

@@ -527,7 +527,7 @@ class BaseAviary(gym.Env):
             self.pos[i], self.quat[i] = p.getBasePositionAndOrientation(self.DRONE_IDS[i], physicsClientId=self.CLIENT)
             self.rpy[i] = p.getEulerFromQuaternion(self.quat[i])
             self.vel[i], self.ang_v[i] = p.getBaseVelocity(self.DRONE_IDS[i], physicsClientId=self.CLIENT)
-            self.load_angle[i] = p.getLinkState(self.DRONE_IDS[i], 2)[1]
+            self.load_angle[i] = p.getLinkState(self.DRONE_IDS[i], 6)[1]
 
     
     ################################################################################
